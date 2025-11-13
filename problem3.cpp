@@ -1,37 +1,69 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <string>
 using namespace std;
+
+class LinearMaxPQ {
+    vector<int> arr;
+
+public:
+    void insertValue(int x) {
+        arr.push_back(x);
+    }
+
+    int findMaxIdx() const {
+        int pos = 0;
+        for (int i = 1; i < arr.size(); i++)
+            if (arr[i] > arr[pos])
+                pos = i;
+        return pos;
+    }
+
+    void printTop() const {
+        if (arr.empty()) {
+            cout << "EMPTY\n";
+            return;
+        }
+        cout << arr[findMaxIdx()] << "\n";
+    }
+
+    void popTop() {
+        if (arr.empty()) {
+            cout << "EMPTY\n";
+            return;
+        }
+        int idx = findMaxIdx();
+        cout << arr[idx] << "\n";
+        arr[idx] = arr.back();
+        arr.pop_back();
+    }
+
+    void printCount() const {
+        cout << arr.size() << "\n";
+    }
+};
 
 int main() {
     int q;
     cin >> q;
-    vector<long long> A;
+
+    LinearMaxPQ pq;
+
     while (q--) {
-        string cmd;
-        cin >> cmd;
-        if (cmd == "insert") {
-            long long x; cin >> x;
-            A.push_back(x);
-        } else if (cmd == "get") {
-            string tmp; cin >> tmp;
-            if (A.empty()) cout << "EMPTY\n";
-            else {
-                long long mx = A[0];
-                for (auto x : A) if (x > mx) mx = x;
-                cout << mx << "\n";
-            }
-        } else if (cmd == "extract") {
-            string tmp; cin >> tmp;
-            if (A.empty()) cout << "EMPTY\n";
-            else {
-                long long mx = A[0];
-                int idx = 0;
-                for (int i = 0; i < A.size(); ++i)
-                    if (A[i] > mx) { mx = A[i]; idx = i; }
-                cout << mx << "\n";
-                A.erase(A.begin() + idx);
-            }
-        } else if (cmd == "size") {
-            cout << A.size() << "\n";
+        string c;
+        cin >> c;
+
+        if (c == "insert") {
+            int v;
+            cin >> v;
+            pq.insertValue(v);
+        } else if (c == "get_max") {
+            pq.printTop();
+        } else if (c == "extract_max") {
+            pq.popTop();
+        } else if (c == "size") {
+            pq.printCount();
         }
     }
+    return 0;
 }

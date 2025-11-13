@@ -4,33 +4,35 @@ using namespace std;
 int main() {
     int q;
     cin >> q;
-    vector<long long> A;
-    string cmd;
+    vector<long long> pq;
     for (int i = 0; i < q; ++i) {
+        string cmd;
         cin >> cmd;
         if (cmd == "insert") {
-            long long x; cin >> x;
-            A.push_back(x);
+            long long x;
+            cin >> x;
+            pq.push_back(x);
         } else if (cmd == "get") {
-            string tmp; cin >> tmp;
-            if (A.empty()) cout << "EMPTY\n";
+            string tmp; cin >> tmp; // max
+            if (pq.empty()) cout << "EMPTY\n";
             else {
-                long long mx = LLONG_MIN;
-                for (auto v : A) mx = max(mx, v);
+                long long mx = pq[0];
+                for (auto x : pq) if (x > mx) mx = x;
                 cout << mx << "\n";
             }
         } else if (cmd == "extract") {
-            string tmp; cin >> tmp;
-            if (A.empty()) cout << "EMPTY\n";
+            string tmp; cin >> tmp; // max
+            if (pq.empty()) cout << "EMPTY\n";
             else {
-                long long mx = LLONG_MIN;
-                int idx = -1;
-                for (int j = 0; j < (int)A.size(); ++j) {
-                    if (A[j] > mx) { mx = A[j]; idx = j; }
-                }
+                long long mx = pq[0];
+                int idx = 0;
+                for (int j = 1; j < (int)pq.size(); ++j)
+                    if (pq[j] > mx) { mx = pq[j]; idx = j; }
                 cout << mx << "\n";
-                A.erase(A.begin() + idx);
+                pq.erase(pq.begin() + idx);
             }
-        } else if (cmd == "size") cout << A.size() << "\n";
+        } else if (cmd == "size") {
+            cout << pq.size() << "\n";
+        }
     }
 }
